@@ -1,6 +1,9 @@
 package language
 
+import scala.concurrent.ExecutionContext
 import scala.util.Random
+
+import concurrent.ExecutionContext.Implicits.global
 
 object Hello extends App {
   class Point(var x: Int, var y: Int):
@@ -95,4 +98,66 @@ object Hello extends App {
   catSerializer.serialize(Cat("Felix"))
 
   // val catSerializer2: Serializer[Cat] = dogSerializer
+
+  case class Centimeters(value: Double) extends AnyVal
+  case class Meters(value: Double) extends AnyVal
+  case class Kilometers(value: Double) extends AnyVal
+
+  implicit val boolean: Boolean = true
+  implicit def meters2centimeters(meters: Meters)(implicit
+      secondArg: Boolean
+  ): Centimeters = Centimeters(
+    meters.value * 1000
+  )
+  implicit val kilometers2meters: Kilometers => Meters =
+    kilometers => Meters(kilometers.value * 1000)
+  val centimeters: Centimeters = Meters(2.5)
+  // val meters: Meters = Kilometers(2.5)
+
+  class LengthSyntax(value: Double) {
+    def centimeters: Centimeters = Centimeters(value)
+
+    def meters: Meters = Meters(value)
+
+    def kilometers: Kilometers = Kilometers(value)
+  }
+
+  implicit def double2richSyntax(value: Double): LengthSyntax =
+    new LengthSyntax(value)
+
+  val length: Double = 2.5
+  println(length.centimeters)
+  println(length.meters)
+  println(length.kilometers)
+
+  val ctx = summon[ExecutionContext]
+
+  given Int = 4
+  def execute(url: String)(using timeout: Int): String = "{}"
+  execute("https://www.baeldung.com")
+
+  case class Second(value: Int)
+
+  object TimeUtil {
+    def doSomethingWithProcessingTime(sec: Second): String = {
+      // impl logic
+      s"${sec.value} seconds"
+    }
+  }
+  object ImplicitConversion {
+    given Conversion[Int, Second] = Second(_)
+  }
+
+  import ImplicitConversion.given
+  val processingTime: Int = 100
+  // auto conversion from Int to Second using given
+  TimeUtil.doSomethingWithProcessingTime(processingTime)
+
+  object Extension {
+    extension (sec: Int) def toSecond = Second(sec)
+  }
+
+  import Extension._
+
+  val sec: Second = 10.toSecond
 }
