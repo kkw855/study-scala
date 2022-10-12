@@ -1,9 +1,9 @@
-package book.red_fp
+package book.red_fp.ch1
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 
-class CafeTest extends AnyFunSuite, Matchers {
+class CafeTest extends AnyFunSuite, Matchers:
   private val cafe = Cafe()
   private val creditA = CreditCard("A")
   private val creditB = CreditCard("B")
@@ -30,4 +30,3 @@ class CafeTest extends AnyFunSuite, Matchers {
       Charge(creditB, 1100)
     )
   }
-}

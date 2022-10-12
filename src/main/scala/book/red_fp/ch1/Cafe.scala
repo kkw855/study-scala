@@ -1,4 +1,4 @@
-package book.red_fp
+package book.red_fp.ch1
 
 private case class CreditCard(id: String)
 private case class Coffee(price: Double)
@@ -7,7 +7,7 @@ private case class Charge(cc: CreditCard, amount: Double):
     if cc == other.cc then other.copy(amount = amount + other.amount)
     else throw new Exception("Can't combine charges to different cards")
 
-class Cafe:
+private class Cafe:
   def buyCoffee(cc: CreditCard): (Coffee, Charge) =
     val coffee = Coffee(1200)
     (coffee, Charge(cc, coffee.price))

@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 
 class ListTest extends AnyFunSuite, Matchers {
   private case class Coffee(name: String, amount: Double)
-  
+
   private val list = List(1, 2, 3)
 
   test("[추가] 리스트 맨 뒤에 엘리먼트를 추가한다.") {
