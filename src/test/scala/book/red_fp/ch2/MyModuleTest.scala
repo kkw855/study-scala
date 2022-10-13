@@ -37,8 +37,12 @@ class MyModuleTest extends AnyFunSuite, Matchers:
   }
 
   test("formatResult") {
-    formatResult(-42, formatAbs) shouldBe "The absolute value of -42 is 42."
-    formatResult(4, formatFactorial) shouldBe "The factorial of 4 is 24."
+    formatResult(
+      "absolute value",
+      -42,
+      abs
+    ) shouldBe "The absolute value of -42 is 42."
+    formatResult("factorial", 4, factorial) shouldBe "The factorial of 4 is 24."
   }
 
   test("findFirstMono") {
@@ -47,17 +51,35 @@ class MyModuleTest extends AnyFunSuite, Matchers:
   }
 
   test("findFirstPoly") {
-    findFirstPoly(Array("hi", "hello", "world"))(
-      _.contains("unknown")
+    findFirstPoly(
+      Array("hi", "hello", "world"),
+      (x: String) => x.contains("unknown")
     ) shouldBe -1
-    findFirstPoly(Array("hi", "hello", "world"))(_.contains("llo")) shouldBe 1
+    findFirstPoly(
+      Array("hi", "hello", "world"),
+      x => x.contains("llo")
+    ) shouldBe 1
 
-    findFirstPoly(Array(1, 2, 3))(_ > 100) shouldBe -1
-    findFirstPoly(Array(1, 2, 3))(_ > 1) shouldBe 1
+    findFirstPoly(Array(1, 2, 3), (x: Int) => x > 100) shouldBe -1
+    findFirstPoly(Array(1, 2, 3), x => x > 1) shouldBe 1
   }
 
   // Exercise 2.2
-//  test("isSorted") {
-//    isSorted(Array(1, 2, 4, 3)) shouldBe false
-//    isSorted(Array(1, 2, 4, 3)) shouldBe false
-//  }
+  test("isSorted") {
+    isSorted(Array(1, 2, 4, 3), (x, y) => x <= y) shouldBe false
+    isSorted(Array(1, 2, 4, 3), (x, y) => x <= y) shouldBe false
+  }
+
+  test("partial1") {
+    val ten = partial1(10, (a: Int, b: Int) => a * b)
+
+    ten(4) shouldBe 40
+  }
+
+  test("curry") {
+    val curriedA: String => String => String = curry((a: String, b: String) => a ++ b)
+    
+    val curriedB: String => String = curriedA("Hello ")
+    
+    curriedB("World!") shouldBe "Hello World!"
+  }

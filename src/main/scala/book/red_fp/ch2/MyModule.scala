@@ -4,7 +4,7 @@ import scala.annotation.tailrec
 
 //noinspection DuplicatedCode
 private object MyModule:
-  private def abs(a: Int) =
+  def abs(a: Int) =
     if a < 0 then -a
     else a
 
@@ -31,8 +31,9 @@ private object MyModule:
       else go(n - 1, cur, prev + cur)
     go(n, 0, 1)
 
-  def formatResult(n: Int, f: Int => String): String =
-    f(n)
+  def formatResult(name: String, n: Int, f: Int => Int): String =
+    val msg = "The %s of %d is %d."
+    msg.format(name, n, f(n))
 
   def findFirstMono(ss: Array[String], key: String): Int =
     @tailrec
@@ -42,7 +43,7 @@ private object MyModule:
       else loop(n + 1)
     loop(0)
 
-  def findFirstPoly[A](ss: Array[A])(p: A => Boolean): Int =
+  def findFirstPoly[A](ss: Array[A], p: A => Boolean): Int =
     @tailrec
     def loop(n: Int): Int =
       if n >= ss.length then -1
@@ -51,10 +52,25 @@ private object MyModule:
     loop(0)
 
   // Exercise 2.2
-  def isSorted[A](ss: Array[A])(p: (A, A) => Boolean): Boolean =
+  def isSorted[A](ss: Array[A], p: (A, A) => Boolean): Boolean =
     @tailrec
     def loop(n: Int): Boolean =
-      if n >= (ss.length - 1) then true
+      if n >= ss.length - 1 then true
       else if !p(ss(n), ss(n + 1)) then false
       else loop(n + 1)
     loop(0)
+
+  def partial1[A, B, C](a: A, f: (A, B) => C): B => C =
+    b => f(a, b)
+
+  // Exercise 2.3
+  def curry[A, B, C](f: (A, B) => C): A => B => C =
+    a => b => f(a, b)
+
+  // Exercise 2.4
+  def uncurry[A, B, C](f: A => B => C): (A, B) => C =
+    (a, b) => f(a)(b)
+
+  // Exercise 2.5
+  def compose[A, B, C](f: A => B, g: B => C): A => C =
+    a => g(f(a))
