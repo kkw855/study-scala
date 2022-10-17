@@ -52,7 +52,54 @@ object List:
     case (Cons(x, Nil), _) => Cons(x, a2)
     case (Cons(x, xs), _)  => Cons(x, append(xs, a2))
 
+  // Exercise 3.6
   def init[A](l: List[A]): List[A] = l match
     case Nil          => sys.error("init of empty list")
     case Cons(_, Nil) => Nil
     case Cons(x, xs)  => Cons(x, init(xs))
+
+  def foldRight[A, B](l: List[A], z: B)(f: (A, B) => B): B = l match
+    case Nil         => z
+    case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+
+  def sum2(l: List[Int]): Int =
+    foldRight(l, 0)(_ + _)
+
+  def product2(l: List[Double]): Double =
+    foldRight(l, 1.0)(_ * _)
+
+  // Exercise 3.9
+  def length[A](l: List[A]): Int =
+    foldRight(l, 0)((_, acc) => 1 + acc)
+
+  // Exercise 3.10
+  @tailrec
+  def foldLeft[A, B](l: List[A], z: B)(f: (B, A) => B): B = l match
+    case Nil         => z
+    case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+
+  // Exercise 3.11
+  def sum3(l: List[Int]): Int =
+    foldLeft(l, 0)(_ + _)
+
+  def product3(l: List[Double]): Double =
+    foldLeft(l, 1.0)(_ * _)
+
+  // Exercise 3.12
+  def reverse[A](l: List[A]): List[A] =
+    foldLeft(l, List[A]())((b, a) => Cons(a, b))
+
+  def foldRightViaFoldLeft[A, B](l: List[A], z: B)(f: (A, B) => B): B =
+    foldLeft(reverse(l), z)((b, a) => f(a, b))
+
+  def foldRightViaFoldLeft_1[A, B](l: List[A], z: B)(f: (A, B) => B): B =
+    foldLeft(l, (b: B) => b)((g, a) => b => g(f(a, b)))(z)
+
+  def foldLeftViaFoldRight[A, B](l: List[A], z: B)(f: (B, A) => B): B =
+    foldRight(l, (b: B) => b)((a, g) => b => g(f(b, a)))(z)
+
+  def appendViaFoldRight[A](l: List[A], r: List[A]): List[A] =
+    foldRight(l, r)(Cons(_, _))
+
+  def concat[A](l: List[List[A]]): List[A] =
+    foldRight(l, List[A]())(append)

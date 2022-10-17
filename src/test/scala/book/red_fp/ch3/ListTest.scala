@@ -60,3 +60,19 @@ class ListTest extends AnyFunSuite, Matchers:
     an[RuntimeException] should be thrownBy init(Nil)
     init(List(1, 2, 3)) shouldBe List(1, 2)
   }
+
+  test("length") {
+    List.length(List(1, 2, 3)) shouldBe 3
+  }
+
+  test("reverse") {
+    reverse(List(1, 2, 3)) shouldBe List(3, 2, 1)
+  }
+
+  test("appendViaFoldRight") {
+    appendViaFoldRight(Nil, Nil) shouldBe Nil
+    appendViaFoldRight(List(1, 2, 3, 4), Nil) shouldBe List(1, 2, 3, 4)
+    appendViaFoldRight(Nil, List(5, 6, 7)) shouldBe List(5, 6, 7)
+    appendViaFoldRight(List(1, 2, 3, 4), List(5, 6, 7)) shouldBe List(1, 2, 3,
+      4, 5, 6, 7)
+  }
