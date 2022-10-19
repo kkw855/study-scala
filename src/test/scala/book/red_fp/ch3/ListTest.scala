@@ -76,3 +76,7 @@ class ListTest extends AnyFunSuite, Matchers:
     appendViaFoldRight(List(1, 2, 3, 4), List(5, 6, 7)) shouldBe List(1, 2, 3,
       4, 5, 6, 7)
   }
+
+  test("plusOne") {
+    plusOne(List(1, 2, 3)) shouldBe List(2, 3, 4)
+  }

@@ -103,3 +103,37 @@ object List:
 
   def concat[A](l: List[List[A]]): List[A] =
     foldRight(l, List[A]())(append)
+
+  def plusOne(l: List[Int]): List[Int] = l match
+    case Nil         => Nil
+    case Cons(x, xs) => Cons(x + 1, plusOne(xs))
+
+  def doubleToString(l: List[Double]): List[String] = l match
+    case Nil         => Nil
+    case Cons(x, xs) => Cons(x.toString, doubleToString(xs))
+
+  def map[A, B](l: List[A])(f: A => B): List[B] = l match
+    case Nil         => Nil
+    case Cons(x, xs) => Cons(f(x), map(xs)(f))
+
+  def filter[A](l: List[A])(p: A => Boolean): List[A] = l match
+    case Nil                 => Nil
+    case Cons(x, xs) if p(x) => Cons(x, filter(xs)(p))
+    case Cons(_, xs)         => filter(xs)(p)
+
+  def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] =
+    concat(map(l)(f))
+
+  def filterViaFlatMap[A](l: List[A])(p: A => Boolean): List[A] =
+    flatMap(l)(x => if p(x) then List(x) else Nil)
+
+  def listPlus(l: List[Int], r: List[Int]): List[Int] = (l, r) match
+    case (Nil, _)                   => Nil
+    case (_, Nil)                   => Nil
+    case (Cons(x, xs), Cons(y, ys)) => Cons(x + y, listPlus(xs, ys))
+
+  def zipWith[A, B, C](l: List[A], r: List[B])(f: (A, B) => C): List[C] =
+    (l, r) match
+      case (Nil, _)                   => Nil
+      case (_, Nil)                   => Nil
+      case (Cons(x, xs), Cons(y, ys)) => Cons(f(x, y), zipWith(xs, ys)(f))
