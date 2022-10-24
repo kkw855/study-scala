@@ -11,6 +11,6 @@ scalacOptions += "-language:implicitConversions"
 
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.8.0"
 
-libraryDependencies += "dev.zio" %% "zio" % "2.0.2"
+libraryDependencies += "org.typelevel" %% "cats-effect" % "3.3.14"
 // Test
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.14" % "test"
