@@ -21,3 +21,13 @@ object TickingClock extends IOApp:
       _ <- IO.sleep(1.seconds)
       _ <- tickingClock
     yield ()
+
+object IO_Test extends App:
+  import cats.effect.unsafe.implicits.global
+
+  val io = IO[Int](throw new RuntimeException("Huh!!!"))
+  // val io = IO(println("Hello IO!"))
+  io.unsafeRunAsync({
+    case Left(l)  => println("Left: " + l)
+    case Right(r) => println("Right: " + r)
+  })
