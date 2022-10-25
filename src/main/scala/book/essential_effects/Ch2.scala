@@ -23,4 +23,4 @@ object Ch2 extends App:
     j <- IO(i + 1)
   yield j.toString
 
-  IO(println("first")).flatMap(_ => IO(println("second"))).unsafeRunAsync()
+  // IO(println("first")).flatMap(_ => IO(println("second"))).unsafeRunAsync()
