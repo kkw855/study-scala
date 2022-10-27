@@ -8,7 +8,12 @@ object Ch2_2 extends IOApp:
     helloWorld.as(ExitCode.Success)
 
   val helloWorld: IO[Unit] =
-    IO(println("Hello world!"))
+    for
+      _ <- IO(println("Hello world1"))
+      _ <- IO(println("Hello world2"))
+      _ <- IO(println(Thread.currentThread.getName))
+      _ <- IO(println("Hello world3"))
+    yield ()
 
 // Exercise 2: Ticking Clock
 object TickingClock extends IOApp:
@@ -27,7 +32,8 @@ object IO_Test extends App:
 
   val io = IO[Int](throw new RuntimeException("Huh!!!"))
   // val io = IO(println("Hello IO!"))
-  io.unsafeRunAsync({
-    case Left(l)  => println("Left: " + l)
-    case Right(r) => println("Right: " + r)
-  })
+//  io.unsafeRunAsync({
+//    case Left(l)  => println("Left: " + l)
+//    case Right(r) => println("Right: " + r)
+//  })
+  IO(println("hello world!")).unsafeRunSync()
